@@ -3,17 +3,21 @@ let elapsedTime = 0;
 let timerInterval;
 
 function printTime() {
-    let minutes = Math.floor(elapsedTime / 60);
-    let seconds = elapsedTime - minutes * 60;
-    document.getElementById("timer").innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    let milliseconds = elapsedTime % 1000;
+    let totalSeconds = Math.floor(elapsedTime / 1000);
+    let seconds = totalSeconds % 60;
+    let minutes = Math.floor(totalSeconds / 60);
+    document.getElementById("timer").innerHTML = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}:${milliseconds < 10 ? "00" : milliseconds < 100 ? "0" : ""}${milliseconds}`;
 }
 
 function startTimer() {
-    startTime = Date.now() - elapsedTime;
-    timerInterval = setInterval(function printElapsedTime() {
-        elapsedTime = Date.now() - startTime;
+    let now = Date.now();
+    startTime = now - elapsedTime;
+    timerInterval = setInterval(function() {
+        let now = Date.now();
+        elapsedTime = now - startTime;
         printTime();
-    }, 1000);
+    }, 10);
 }
 
 function stopTimer() {
